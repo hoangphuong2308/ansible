@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  name: "Ping test /etc/ansible/hosts/" 
   gather_facts: false
   tasks:
     - ping:
