@@ -1,4 +1,7 @@
 ---
+######################
+### Cisco Switches ###
+######################
  - hosts: cisco_switches
    gather_facts: no
    connection: local
@@ -10,10 +13,27 @@
 
        register: RUNCFG
 
-     - set_fact: time="{{lookup('pipe','date \"+%Y-%m-%d-%H-%M\"')}}"
+     - name: define time format
+       set_fact: time="{{lookup('pipe','date \"+%Y-%m-%d\"')}}"
 
      - name: save output to a file
        connection: local
        copy:
          content="\n ===show run=== \n {{ RUNCFG.stdout[0] }}"
          dest="/var/backups/switch/{{ inventory_hostname }}_run_cfg_{{ time }}.txt"
+
+######################
+### Cisco Switches ###
+######################
+ - hosts: juniper_routers
+   gather_facts: no
+   connection: local
+
+   tasks:
+     - name: configurable backup path
+       junos_config:
+         src: srx.cfg
+         backup: yes
+         backup_options:
+           filename: backup.cfg
+           dir_path: /var/backups/router 

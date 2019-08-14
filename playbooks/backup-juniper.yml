@@ -1,0 +1,20 @@
+---
+######################
+### Cisco Switches ###
+######################
+- hosts: juniper_routers
+  roles:
+    - Juniper.junos
+  gather_facts: no
+  connection: local
+
+  tasks:
+     - name: get device configuration
+       wait_for:
+         host: “{{ inventory_hostname }}”
+         port: 830
+         timeout: 5
+       # junos_get_config:
+        # host: "{{ ansible_host }}"
+        # dest: "/var/backups/router/{{ ansible_host }}"
+        # format: text
