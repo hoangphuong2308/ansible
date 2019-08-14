@@ -2,15 +2,18 @@
  - hosts: cisco_switches
    gather_facts: no
    connection: local
-      
+
    tasks:
-   
-   - name: SYS | Define provider
-     set_fact:
-       provider:
-         host: "{{ inventory_hostname }}"
-         
-   - name: BKUPSwitch | backup configs and save to ./backup
-     ios_config:
-       provider: "{{ provider }}"
-       backup: yes
+     - name: Collect configuration from all switches
+       ios_command:
+         commands: show run
+
+       register: RUNCFG
+
+     - set_fact: time="{{lookup('pipe','date \"+%Y-%m-%d-%H-%M\"')}}"
+
+     - name: save output to a file
+       connection: local
+       copy:
+         content="\n ===show run=== \n {{ RUNCFG.stdout[0] }}"
+         dest="/var/backups/switch/{{ inventory_hostname }}_run_cfg_{{ time }}.txt"
