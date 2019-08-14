@@ -1,0 +1,16 @@
+---
+ - hosts: cisco_switches
+   gather_facts: no
+   connection: local
+      
+   tasks:
+   
+   - name: SYS | Define provider
+     set_fact:
+       provider:
+         host: "{{ inventory_hostname }}"
+         
+   - name: BKUPSwitch | backup configs and save to ./backup
+     ios_config:
+       provider: "{{ provider }}"
+       backup: yes

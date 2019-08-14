@@ -1,0 +1,1652 @@
+Building configuration...
+
+Current configuration : 43564 bytes
+!
+! Last configuration change at 11:17:58 HCM Wed Aug 14 2019 by ithcm
+! NVRAM config last updated at 11:17:59 HCM Wed Aug 14 2019 by ithcm
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service counters max age 5
+service unsupported-transceiver
+!
+hostname F2-6809XL-01S
+!
+boot-start-marker
+boot system flash bootdisk:s2t54-ipservicesk9-mz.SPA.152-1.SY0a.bin
+boot-end-marker
+!
+!
+hw-module switch 1 slot 1 operation-mode port-group 1 TenGigabitEthernet
+hw-module switch 1 slot 1 operation-mode port-group 2 TenGigabitEthernet
+hw-module switch 2 slot 1 operation-mode port-group 1 TenGigabitEthernet
+hw-module switch 2 slot 1 operation-mode port-group 2 TenGigabitEthernet
+logging buffered 16384
+logging monitor informational
+enable secret 5 $1$gMbA$3XvydiJuLapuudeVNmdLX1
+!
+username ithcm privilege 15 password 7 0808586E0F0A551106
+aaa new-model
+!
+!
+aaa authentication login default local group radius
+aaa authentication login console local
+aaa authorization exec default local group radius 
+!
+!
+!
+!
+!
+aaa session-id common
+platform ip cef load-sharing ip-only
+clock timezone HCM 7 0
+!
+!
+no ip domain-lookup
+ip domain-name fsoft.fpt.vn
+!
+
+shutdown vlan 355
+
+shutdown vlan 532
+
+shutdown vlan 535
+
+shutdown vlan 537
+
+shutdown vlan 562
+
+shutdown vlan 581
+
+shutdown vlan 626
+
+shutdown vlan 628
+
+shutdown vlan 629
+
+shutdown vlan 630
+
+shutdown vlan 632
+
+shutdown vlan 633
+
+shutdown vlan 995
+
+!
+!
+!
+!
+!
+!
+switch virtual domain 100
+ switch mode virtual
+ switch 1 priority 200
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode mst
+spanning-tree extend system-id
+!
+spanning-tree mst configuration
+ name FPT
+ revision 4
+ instance 1 vlan 1-1000
+!
+spanning-tree mst 0-1 priority 8192
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no errdisable detect cause gbic-invalid
+!
+redundancy
+ main-cpu
+  auto-sync running-config
+ mode sso
+!
+vlan internal allocation policy ascending
+vlan access-log ratelimit 2000
+!
+ip ssh version 2
+lldp run
+!
+class-map match-any class-copp-icmp-redirect-unreachable
+class-map match-all class-copp-glean
+class-map match-all class-copp-receive
+class-map match-all class-copp-options
+class-map match-all class-copp-broadcast
+class-map match-all class-copp-mcast-acl-bridged
+class-map match-all class-copp-slb
+class-map match-all class-copp-mtu-fail
+class-map match-all class-copp-ttl-fail
+class-map match-all class-copp-arp-snooping
+class-map match-any class-copp-mcast-copy
+class-map match-any class-copp-ip-connected
+class-map match-any class-copp-match-igmp
+ match access-group name acl-copp-match-igmp
+class-map match-all class-copp-unknown-protocol
+class-map match-any class-copp-vacl-log
+class-map match-all class-copp-mcast-ipv6-control
+class-map match-any class-copp-match-pimv6-data
+ match access-group name acl-copp-match-pimv6-data
+class-map match-any class-copp-mcast-punt
+class-map match-all class-copp-unsupp-rewrite
+class-map match-all class-copp-ucast-egress-acl-bridged
+class-map match-all class-copp-ip-admission
+class-map match-any class-copp-dpss-divert
+class-map match-all class-copp-service-insertion
+class-map match-all class-copp-mac-pbf
+class-map match-any class-copp-match-mld
+ match access-group name acl-copp-match-mld
+class-map match-all class-copp-ucast-ingress-acl-bridged
+class-map match-all class-copp-dhcp-snooping
+class-map match-all class-copp-wccp
+class-map match-all class-copp-nd
+class-map match-any class-copp-ipv6-connected
+class-map match-all class-copp-mcast-rpf-fail
+class-map match-any class-copp-ucast-rpf-fail
+class-map match-all class-copp-mcast-ip-control
+class-map match-any class-copp-match-pim-data
+ match access-group name acl-copp-match-pim-data
+class-map match-any class-copp-match-ndv6
+ match access-group name acl-copp-match-ndv6
+class-map match-any class-copp-mcast-v4-data-on-routedPort
+class-map match-any class-copp-mcast-v6-data-on-routedPort
+!
+policy-map policy-default-autocopp
+ class class-copp-mcast-v4-data-on-routedPort
+   police rate 10 pps burst 1 packets    conform-action drop     exceed-action drop 
+ class class-copp-mcast-v6-data-on-routedPort
+   police rate 10 pps burst 1 packets    conform-action drop     exceed-action drop 
+ class class-copp-match-mld
+   police rate 10000 pps burst 10000 packets    conform-action set-discard-class-transmit 48    exceed-action transmit 
+ class class-copp-match-igmp
+   police rate 10000 pps burst 10000 packets    conform-action set-discard-class-transmit 48    exceed-action transmit 
+ class class-copp-icmp-redirect-unreachable
+   police rate 100 pps burst 10 packets    conform-action transmit     exceed-action drop 
+ class class-copp-ucast-rpf-fail
+   police rate 100 pps burst 10 packets    conform-action transmit     exceed-action drop 
+ class class-copp-vacl-log
+   police rate 2000 pps burst 1 packets    conform-action transmit     exceed-action drop 
+ class class-copp-mcast-punt
+   police rate 1000 pps burst 256 packets    conform-action transmit     exceed-action drop 
+ class class-copp-mcast-copy
+   police rate 1000 pps burst 256 packets    conform-action transmit     exceed-action drop 
+ class class-copp-ip-connected
+   police rate 1000 pps burst 256 packets    conform-action transmit     exceed-action drop 
+ class class-copp-ipv6-connected
+   police rate 1000 pps burst 256 packets    conform-action transmit     exceed-action drop 
+ class class-copp-match-pim-data
+   police rate 1000 pps burst 1000 packets    conform-action transmit     exceed-action drop 
+ class class-copp-match-pimv6-data
+   police rate 1000 pps burst 1000 packets    conform-action transmit     exceed-action drop 
+ class class-copp-match-ndv6
+   police rate 1000 pps burst 1000 packets    conform-action set-discard-class-transmit 48    exceed-action drop 
+!
+!
+!
+!
+!
+interface Port-channel2
+ description "CONNECT_TO_F2-3850-00A-10"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel3
+ description "Po3-CONNECT_HP_PureFlex"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel4
+ description des "Po4-Connect_To_Switch-Server-1.200" 
+ switchport
+ switchport mode trunk
+!
+interface Port-channel5
+ description Connect_To_SW2960x-CME
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 50,96,368,515,516,596
+!
+interface Port-channel7
+ no switchport
+ no ip address
+ shutdown
+!
+interface Port-channel8
+ description Trunk-174.16.1.16
+ switchport
+ switchport mode trunk
+!
+interface Port-channel10
+ description "Connect_To_Switch-DR-Site"
+ no switchport
+ ip address 172.20.1.153 255.255.255.248
+!
+interface Port-channel12
+ description Connect_To_F1-6506E-00N3
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 2-5,7-9,11-13,18,19,21-49,51-56,95,96,100-111
+ switchport trunk allowed vlan add 200,300-316,319,320,322,332-334,336,339
+ switchport trunk allowed vlan add 341-344,350-352,354-357,360,361,364-366
+ switchport trunk allowed vlan add 368-375,384,386,398,401,402,406,440,480
+ switchport trunk allowed vlan add 501-518,520-524,526-546,548-565,567-570,574
+ switchport trunk allowed vlan add 575,577,580-585,591,592,594,596-598,600-602
+ switchport trunk allowed vlan add 604-608,610,618,620-634,640,641,700-709,802
+ switchport trunk allowed vlan add 949-956,990,995-998
+!
+interface Port-channel13
+ no switchport
+ mtu 1600
+ no ip address
+ shutdown
+!
+interface Port-channel15
+ switchport
+ switchport mode trunk
+!
+interface Port-channel17
+ switchport
+ switchport mode trunk
+!
+interface Port-channel18
+ description "Connect_To_ESX-252.100"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel21
+ switchport
+ switchport mode trunk
+!
+interface Port-channel22
+ switchport
+ switchport mode trunk
+!
+interface Port-channel24
+ description "Connect_To_SCS-Floor3"
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,40,43,50,100,200,303-305,309-313,319,320,332
+ switchport trunk allowed vlan add 336,350-352,361,502,507,511-513,521,522,524
+ switchport trunk allowed vlan add 526-528,530,532,534-540,542,544,546,548,556
+ switchport trunk allowed vlan add 567,568,574,585,594,596,605,606,610,802,949
+ switchport trunk allowed vlan add 950
+!
+interface Port-channel25
+ description Connect_To_SCS-Floor7
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,40,43,50,100,200,303-305,309-313,319,320,332
+ switchport trunk allowed vlan add 350-352,361,402,502,507,511-513,521,522,524
+ switchport trunk allowed vlan add 526-528,530,532,534-540,542,544-546,548,556
+ switchport trunk allowed vlan add 567,568,574,585,594,596,605,606,610,802,949
+ switchport trunk allowed vlan add 950
+!
+interface Port-channel26
+ description Connect_To_SCS-Floor8
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,35,40,43,50,100,200,303-305,309-313,319,320
+ switchport trunk allowed vlan add 332,350-352,354,356,361,364,369,502,507
+ switchport trunk allowed vlan add 511-513,521,522,524,526-528,530,532,534-540
+ switchport trunk allowed vlan add 542,544,546,548,552,556,567,568,570,574,585
+ switchport trunk allowed vlan add 594,596,605,606,610,627,802,949,950
+!
+interface Port-channel27
+ description "Po27-Connect_to_ESX-252.105" 
+ switchport
+ switchport mode trunk
+!
+interface Port-channel28
+ description "Po28-Connect_to_ESX-252.107"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel29
+ description "Po29-Connect_to_ESX-252.106" 
+ switchport
+ switchport mode trunk
+!
+interface Port-channel30
+ description "Po30-Connect_to_ESX-252.104" 
+ switchport
+ switchport mode trunk
+!
+interface Port-channel31
+ description "PO-Connect_To_ESX-252.124"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel32
+ description "PO-Connect_To_ESX-252.125"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel33
+ description "Connect_To_ESX-252.101"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel34
+ description "PO-Connect_To_ESX-252.127"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel35
+ description "Connect_To_ESX-252.102"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel36
+ switchport
+ switchport mode trunk
+!
+interface Port-channel100
+ no switchport
+ no ip address
+ no platform qos channel-consistency
+ switch virtual link 1
+!
+interface Port-channel101
+ description "CONNECT_TO_ESXi-10.88.1.94" 
+ switchport
+ switchport mode trunk
+!
+interface Port-channel102
+ description "Po102-CONNECT_TO_ESX-10.88.1.96"
+ switchport
+ switchport mode trunk
+!
+interface Port-channel103
+ switchport
+ switchport mode trunk
+!
+interface Port-channel200
+ no switchport
+ no ip address
+ no platform qos channel-consistency
+ switch virtual link 2
+!
+interface Port-channel500
+ switchport
+ switchport mode trunk
+!
+interface TenGigabitEthernet1/1/5
+ description "Te1/1/5-VSS Port"
+ no switchport
+ no ip address
+ no cdp enable
+ channel-group 100 mode on
+!
+interface TenGigabitEthernet1/1/6
+ description "Te1/1/6-VSS Port"
+ no switchport
+ no ip address
+ no cdp enable
+ channel-group 100 mode on
+!
+interface TenGigabitEthernet1/1/7
+ description "Te1/1/7-CONNECT_TO_ESXi-10.88.1.94"
+ switchport
+ switchport mode trunk
+ channel-group 101 mode on
+!
+interface TenGigabitEthernet1/1/8
+ description "Te1/1/8-Connect_To_Switch-Server-1.200"
+ switchport
+ switchport mode trunk
+ channel-group 4 mode on
+!
+interface TenGigabitEthernet1/1/9
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/1/10
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/1/11
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/1/12
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/1/13
+ description "Te1/1/13-CONNECT_HP_PureFlex"
+ switchport
+ switchport mode trunk
+ channel-group 3 mode active
+!
+interface TenGigabitEthernet1/1/14
+ description "Te1/1/14 CONNECT_TO_ESX-10.88.1.96"
+ switchport
+ switchport mode trunk
+ channel-group 102 mode on
+!
+interface TenGigabitEthernet1/1/15
+ switchport
+ switchport mode trunk
+ channel-group 15 mode on
+!
+interface TenGigabitEthernet1/1/16
+ description "Te1/1/16-Connect_to_ESX-252.107"
+ switchport
+ switchport mode trunk
+ channel-group 28 mode on
+!
+interface TenGigabitEthernet1/1/17
+ description "Te1/1/17-CONNECT_HP_PureFlex" 
+ switchport
+ switchport mode trunk
+ channel-group 3 mode active
+!
+interface TenGigabitEthernet1/1/18
+ description "Te1/1/18-Connect_to_ESX-252.105" 
+ switchport
+ switchport mode trunk
+ channel-group 27 mode on
+!
+interface TenGigabitEthernet1/1/19
+ description "Te1/1/19-Connect_to_ESX-252.106" 
+ switchport
+ switchport mode trunk
+ channel-group 29 mode on
+!
+interface TenGigabitEthernet1/1/20
+ description "Te1/1/20-Connect_to_ESX-252.104" 
+ switchport
+ switchport mode trunk
+ channel-group 30 mode on
+!
+interface GigabitEthernet1/2/1
+ switchport
+ switchport mode trunk
+ channel-group 21 mode on
+!
+interface GigabitEthernet1/2/2
+ description "G1/2/2-Connect_to_F2-3850-01B-11"
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet1/2/3
+ description "G1/2/3-Connect_to_F2-3850-02B-12" 
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet1/2/4
+ description "G1/2/4-Connect_to_F2-3850-03B-13"
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet1/2/5
+ description "G1/2/5-Connect_to_F2-3850-00A-10"
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet1/2/6
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/7
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/8
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/9
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/10
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/11
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/12
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/13
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/14
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/2/15
+ switchport
+ switchport mode trunk
+ channel-group 500 mode on
+!
+interface GigabitEthernet1/2/16
+ no switchport
+ no ip address
+ channel-group 10 mode on
+!
+interface GigabitEthernet1/2/17
+ description Connect_to_proxy_72.10
+ switchport
+ switchport mode access
+ switchport access vlan 375
+!
+interface GigabitEthernet1/2/18
+ switchport
+ switchport mode trunk
+ channel-group 36 mode on
+!
+interface GigabitEthernet1/2/19
+ description Connect_to_Juniper-SRX300-VPN-FSOFT_ge-4
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet1/2/20
+ description "Connect_To_SCS-Floor3"
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,40,43,50,100,200,303-305,309-313,319,320,332
+ switchport trunk allowed vlan add 336,350-352,361,502,507,511-513,521,522,524
+ switchport trunk allowed vlan add 526-528,530,532,534-540,542,544,546,548,556
+ switchport trunk allowed vlan add 567,568,574,585,594,596,605,606,610,802,949
+ switchport trunk allowed vlan add 950
+ channel-group 24 mode on
+!
+interface GigabitEthernet1/2/21
+ description G1/2/21-Connect_To_SCS-Floor8
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,35,40,43,50,100,200,303-305,309-313,319,320
+ switchport trunk allowed vlan add 332,350-352,354,356,361,364,369,502,507
+ switchport trunk allowed vlan add 511-513,521,522,524,526-528,530,532,534-540
+ switchport trunk allowed vlan add 542,544,546,548,552,556,567,568,570,574,585
+ switchport trunk allowed vlan add 594,596,605,606,610,627,802,949,950
+ channel-group 26 mode on
+!
+interface GigabitEthernet1/2/22
+ description Gi1/2/22-Connect_To_SCS-Floor7
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,40,43,50,100,200,303-305,309-313,319,320,332
+ switchport trunk allowed vlan add 350-352,361,402,502,507,511-513,521,522,524
+ switchport trunk allowed vlan add 526-528,530,532,534-540,542,544-546,548,556
+ switchport trunk allowed vlan add 567,568,574,585,594,596,605,606,610,802,949
+ switchport trunk allowed vlan add 950
+ channel-group 25 mode on
+!
+interface GigabitEthernet1/2/23
+ switchport
+ switchport mode trunk
+ channel-group 8 mode on
+!
+interface GigabitEthernet1/2/24
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 50,96,368,515,516,596
+ channel-group 5 mode on
+!
+interface GigabitEthernet1/3/1
+ no switchport
+ no ip address
+!
+interface GigabitEthernet1/3/2
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1/3/3
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/3/4
+ description Join_To_Po12
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 2-5,7-9,11-13,18,19,21-49,51-56,95,96,100-111
+ switchport trunk allowed vlan add 200,300-316,319,320,322,332-334,336,339
+ switchport trunk allowed vlan add 341-344,350-352,354-357,360,361,364-366
+ switchport trunk allowed vlan add 368-375,384,386,398,401,402,406,440,480
+ switchport trunk allowed vlan add 501-518,520-524,526-546,548-565,567-570,574
+ switchport trunk allowed vlan add 575,577,580-585,591,592,594,596-598,600-602
+ switchport trunk allowed vlan add 604-608,610,618,620-634,640,641,700-709,802
+ switchport trunk allowed vlan add 949-956,990,995-998
+ channel-group 12 mode on
+!
+interface TenGigabitEthernet1/3/5
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/1
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/2
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/3
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/4
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/5
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/6
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/7
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/8
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/9
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/10
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/11
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/12
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/13
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/14
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/15
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/4/16
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet1/5/1
+ description "Connect_To_ESX-252.124-Port1"
+ switchport
+ switchport mode trunk
+ channel-group 31 mode on
+!
+interface TenGigabitEthernet1/5/2
+ description "Connect_To_ESX-252.125-Port1"
+ switchport
+ switchport mode trunk
+ channel-group 32 mode on
+!
+interface TenGigabitEthernet1/5/3
+ description "Connect_To_ESX-252.101-Port1"
+ switchport
+ switchport mode trunk
+ channel-group 33 mode on
+!
+interface TenGigabitEthernet1/5/4
+ description "Connect_To_ESX-252.127-Port1"
+ switchport
+ switchport mode trunk
+ channel-group 34 mode on
+!
+interface TenGigabitEthernet1/5/5
+ description "Connect_To_ESX-252.102-Port1"
+ switchport
+ switchport mode trunk
+ channel-group 35 mode on
+!
+interface TenGigabitEthernet1/5/6
+ switchport
+ switchport mode trunk
+ channel-group 18 mode on
+!
+interface TenGigabitEthernet1/5/7
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/8
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/9
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/10
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/11
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/12
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/13
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/14
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/15
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet1/5/16
+ switchport
+ switchport mode trunk
+ channel-group 17 mode on
+!
+interface TenGigabitEthernet2/1/5
+ description "Te2/1/5-VSS Port"
+ no switchport
+ no ip address
+ no cdp enable
+ channel-group 200 mode on
+!
+interface TenGigabitEthernet2/1/6
+ description "Te2/1/6-VSS Port"
+ no switchport
+ no ip address
+ no cdp enable
+ channel-group 200 mode on
+!
+interface TenGigabitEthernet2/1/7
+ description "Te2/1/7-CONNECT_TO_ESXi-10.88.1.94"
+ switchport
+ switchport mode trunk
+ channel-group 101 mode on
+!
+interface TenGigabitEthernet2/1/8
+ description "Te2/1/8-Connect_To_Switch-Server-1.200" 
+ switchport
+ switchport mode trunk
+ channel-group 4 mode on
+!
+interface TenGigabitEthernet2/1/9
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet2/1/10
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet2/1/11
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet2/1/12
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet2/1/13
+ description "Te2/1/13-CONNECT_HP_PureFlex"
+ switchport
+ switchport mode trunk
+ channel-group 3 mode active
+!
+interface TenGigabitEthernet2/1/14
+ description "Te2/1/14 CONNECT_TO_ESX-10.88.1.96"
+ switchport
+ switchport mode trunk
+ channel-group 102 mode on
+!
+interface TenGigabitEthernet2/1/15
+ switchport
+ switchport mode trunk
+ channel-group 15 mode on
+!
+interface TenGigabitEthernet2/1/16
+ description "Te2/1/16-Connect_to_ESX-252.107"
+ switchport
+ switchport mode trunk
+ channel-group 28 mode on
+!
+interface TenGigabitEthernet2/1/17
+ description "Te2/1/17-CONNECT_HP_PureFlex" 
+ switchport
+ switchport mode trunk
+ channel-group 3 mode active
+!
+interface TenGigabitEthernet2/1/18
+ description "Te2/1/18-Connect_to_ESX-252.105" 
+ switchport
+ switchport mode trunk
+ channel-group 27 mode on
+!
+interface TenGigabitEthernet2/1/19
+ description "Te2/1/19-Connect_to_ESX-252.106" 
+ switchport
+ switchport mode trunk
+ channel-group 29 mode on
+!
+interface TenGigabitEthernet2/1/20
+ description "Te2/1/20-Connect_to_ESX-252.104" 
+ switchport
+ switchport mode trunk
+ channel-group 30 mode on
+!
+interface GigabitEthernet2/2/1
+ switchport
+ switchport mode trunk
+ channel-group 21 mode on
+!
+interface GigabitEthernet2/2/2
+ switchport
+ switchport mode trunk
+ shutdown
+ channel-group 22 mode on
+!
+interface GigabitEthernet2/2/3
+ switchport
+ switchport mode trunk
+ channel-group 103 mode on
+!
+interface GigabitEthernet2/2/4
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/5
+ switchport
+ switchport mode trunk
+ shutdown
+ channel-group 2 mode on
+!
+interface GigabitEthernet2/2/6
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet2/2/7
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/8
+ no switchport
+ no ip address
+!
+interface GigabitEthernet2/2/9
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/10
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/11
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/12
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/13
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/14
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/2/15
+ switchport
+ switchport mode trunk
+ channel-group 500 mode on
+!
+interface GigabitEthernet2/2/16
+ no switchport
+ no ip address
+ channel-group 10 mode on
+!
+interface GigabitEthernet2/2/17
+ description Connect_to_hcm-proxy_72.10
+ switchport
+ switchport mode access
+ switchport access vlan 375
+!
+interface GigabitEthernet2/2/18
+ switchport
+ switchport mode trunk
+ channel-group 36 mode on
+!
+interface GigabitEthernet2/2/19
+ description Connect_to_Juniper-SRX300-VPN-FSOFT_ge-4
+ switchport
+ switchport mode trunk
+!
+interface GigabitEthernet2/2/20
+ description "Connect_To_SCS-Floor3"
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,40,43,50,100,200,303-305,309-313,319,320,332
+ switchport trunk allowed vlan add 336,350-352,361,502,507,511-513,521,522,524
+ switchport trunk allowed vlan add 526-528,530,532,534-540,542,544,546,548,556
+ switchport trunk allowed vlan add 567,568,574,585,594,596,605,606,610,802,949
+ switchport trunk allowed vlan add 950
+ channel-group 24 mode on
+!
+interface GigabitEthernet2/2/21
+ description G2/2/21-Connect_To_SCS-Floor8
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,35,40,43,50,100,200,303-305,309-313,319,320
+ switchport trunk allowed vlan add 332,350-352,354,356,361,364,369,502,507
+ switchport trunk allowed vlan add 511-513,521,522,524,526-528,530,532,534-540
+ switchport trunk allowed vlan add 542,544,546,548,552,556,567,568,570,574,585
+ switchport trunk allowed vlan add 594,596,605,606,610,627,802,949,950
+ channel-group 26 mode on
+!
+interface GigabitEthernet2/2/22
+ description Gi2/2/22-Connect_To_SCS-Floor7
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 31,40,43,50,100,200,303-305,309-313,319,320,332
+ switchport trunk allowed vlan add 350-352,361,402,502,507,511-513,521,522,524
+ switchport trunk allowed vlan add 526-528,530,532,534-540,542,544-546,548,556
+ switchport trunk allowed vlan add 567,568,574,585,594,596,605,606,610,802,949
+ switchport trunk allowed vlan add 950
+ channel-group 25 mode on
+!
+interface GigabitEthernet2/2/23
+ switchport
+ switchport mode trunk
+ shutdown
+ channel-group 8 mode on
+!
+interface GigabitEthernet2/2/24
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 50,96,368,515,516,596
+ channel-group 5 mode on
+!
+interface GigabitEthernet2/3/1
+ no switchport
+ no ip address
+!
+interface GigabitEthernet2/3/2
+ no switchport
+ no ip address
+ shutdown
+!
+interface GigabitEthernet2/3/3
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet2/3/4
+ switchport
+ switchport mode trunk
+ switchport trunk allowed vlan 2-5,7-9,11-13,18,19,21-49,51-56,95,96,100-111
+ switchport trunk allowed vlan add 200,300-316,319,320,322,332-334,336,339
+ switchport trunk allowed vlan add 341-344,350-352,354-357,360,361,364-366
+ switchport trunk allowed vlan add 368-375,384,386,398,401,402,406,440,480
+ switchport trunk allowed vlan add 501-518,520-524,526-546,548-565,567-570,574
+ switchport trunk allowed vlan add 575,577,580-585,591,592,594,596-598,600-602
+ switchport trunk allowed vlan add 604-608,610,618,620-634,640,641,700-709,802
+ switchport trunk allowed vlan add 949-956,990,995-998
+ channel-group 12 mode on
+!
+interface TenGigabitEthernet2/3/5
+ no switchport
+ no ip address
+ shutdown
+!
+interface TenGigabitEthernet2/5/1
+ description "Connect_To_ESX-252.124-Port2"
+ switchport
+ switchport mode trunk
+ channel-group 31 mode on
+!
+interface TenGigabitEthernet2/5/2
+ description "Connect_To_ESX-252.125-Port2"
+ switchport
+ switchport mode trunk
+ channel-group 32 mode on
+!
+interface TenGigabitEthernet2/5/3
+ description "Connect_To_ESX-252.101-Port2" 
+ switchport
+ switchport mode trunk
+ channel-group 33 mode on
+!
+interface TenGigabitEthernet2/5/4
+ description "Connect_To_ESX-252.127-Port2"
+ switchport
+ switchport mode trunk
+ shutdown
+ channel-group 34 mode on
+!
+interface TenGigabitEthernet2/5/5
+ description "Connect_To_ESX-252.102-Port2"
+ switchport
+ switchport mode trunk
+ channel-group 35 mode on
+!
+interface TenGigabitEthernet2/5/6
+ switchport
+ switchport mode trunk
+ channel-group 18 mode on
+!
+interface TenGigabitEthernet2/5/7
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/8
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/9
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/10
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/11
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/12
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/13
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/14
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/15
+ no switchport
+ no ip address
+!
+interface TenGigabitEthernet2/5/16
+ switchport
+ switchport mode trunk
+ channel-group 17 mode on
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan3
+ ip address 10.88.0.4 255.255.255.0
+!
+interface Vlan7
+ ip address 172.16.77.1 255.255.255.248
+!
+interface Vlan8
+ ip address 172.16.78.1 255.255.255.248
+!
+interface Vlan9
+ ip address 172.16.90.1 255.255.255.248
+!
+interface Vlan19
+ no ip address
+ shutdown
+!
+interface Vlan29
+ no ip address
+!
+interface Vlan43
+ no ip address
+!
+interface Vlan50
+ ip address 174.16.1.1 255.255.255.0
+!
+interface Vlan102
+ ip address 172.20.1.9 255.255.255.248
+!
+interface Vlan103
+ ip address 172.20.1.17 255.255.255.248
+!
+interface Vlan105
+ ip address 172.20.1.33 255.255.255.248
+!
+interface Vlan106
+ ip address 172.20.1.41 255.255.255.248
+!
+interface Vlan107
+ ip address 172.20.1.49 255.255.255.248
+!
+interface Vlan118
+ ip address 172.20.1.137 255.255.255.248
+!
+interface Vlan119
+ ip address 172.20.1.145 255.255.255.248
+!
+interface Vlan299
+ ip address 10.88.10.1 255.255.255.0
+!
+interface Vlan334
+ no ip address
+!
+interface Vlan336
+ no ip address
+ shutdown
+!
+interface Vlan338
+ ip address 10.89.38.1 255.255.255.0
+ ip helper-address 10.88.1.68
+!
+interface Vlan339
+ ip address 10.89.39.1 255.255.255.0
+ ip helper-address 10.88.1.68
+!
+interface Vlan502
+ no ip address
+!
+interface Vlan522
+ no ip address
+!
+interface Vlan536
+ no ip address
+!
+interface Vlan552
+ no ip address
+!
+interface Vlan566
+ ip address 10.89.166.1 255.255.254.0
+ ip helper-address 10.88.1.68
+!
+interface Vlan582
+ ip address 10.89.182.1 255.255.254.0
+ ip helper-address 10.88.1.68
+!
+interface Vlan592
+ ip address 10.89.192.1 255.255.254.0
+ ip helper-address 10.88.1.68
+!
+interface Vlan602
+ no ip address
+!
+interface Vlan604
+ no ip address
+!
+interface Vlan605
+ ip address 10.89.205.1 255.255.255.0
+ ip helper-address 10.88.1.55
+!
+interface Vlan608
+ no ip address
+!
+interface Vlan634
+ no ip address
+ shutdown
+!
+interface Vlan948
+ ip address 10.88.248.1 255.255.255.0
+!
+interface Vlan950
+ ip address 10.89.250.1 255.255.255.0
+!
+interface Vlan951
+ ip address 10.88.251.1 255.255.255.0
+!
+interface Vlan952
+ ip address 10.88.252.1 255.255.255.0
+!
+interface Vlan997
+ no ip address
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.88.0.1
+ip route 8.8.4.4 255.255.255.255 10.89.0.110
+ip route 10.0.0.0 255.248.0.0 10.88.0.1
+ip route 10.4.0.0 255.255.0.0 10.88.0.1
+ip route 10.15.240.0 255.255.255.0 10.88.0.1
+ip route 10.16.0.0 255.255.0.0 10.88.0.1
+ip route 10.17.0.0 255.255.0.0 10.88.0.1
+ip route 10.17.240.0 255.255.240.0 10.88.0.1
+ip route 10.50.17.0 255.255.255.0 10.88.0.1 name Route_To_CME-AIA
+ip route 10.65.91.0 255.255.255.0 10.88.0.1
+ip route 10.68.90.0 255.255.255.0 10.88.0.1
+ip route 10.70.50.39 255.255.255.255 10.88.1.1
+ip route 10.86.0.0 255.255.0.0 10.88.0.1
+ip route 10.88.0.0 255.255.0.0 10.88.0.1
+ip route 10.88.1.0 255.255.255.0 10.88.0.1
+ip route 10.88.18.0 255.255.255.0 172.20.1.148
+ip route 10.88.19.0 255.255.255.0 172.20.1.36 name ROUTE_TO_FW-ODC-SERVER-IT
+ip route 10.88.22.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.23.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.32.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.40.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.41.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.42.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.43.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.44.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.45.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.54.0 255.255.254.0 172.20.1.52 name ROUTE_TO_FW-ODC-WIRELESS
+ip route 10.88.56.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.64.192 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.66.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.70.0 255.255.255.128 172.20.1.44 name Route_To_FW_FT1-DMZ_PUBLISHING-GW
+ip route 10.88.70.128 255.255.255.128 172.20.1.44 name Route_To_FW_FT1-DMZ_PUBLISHING-GW
+ip route 10.88.71.0 255.255.255.128 172.20.1.44 name Route_To_FW_FT1-DMZ_PUBLISHING-GW
+ip route 10.88.71.128 255.255.255.128 172.20.1.44 name Route_To_FW_FT1-DMZ_PUBLISHING-GW
+ip route 10.88.72.0 255.255.255.128 172.20.1.140 name ROUTE_TO_FW-DMZ_OUT
+ip route 10.88.80.0 255.255.248.0 172.20.1.52
+ip route 10.88.98.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.98.128 255.255.255.128 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.99.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.104.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.109.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.110.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.120.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.131.0 255.255.255.128 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.144.0 255.255.254.0 172.20.1.52 name Route_To_ODC-Wireless
+ip route 10.88.146.0 255.255.254.0 172.20.1.52 name Route_To_ODC-Wireless
+ip route 10.88.148.0 255.255.254.0 172.20.1.52 name Route_To_ODC-Wireless
+ip route 10.88.154.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.154.64 255.255.255.192 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.155.0 255.255.255.128 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.155.192 255.255.255.192 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITYdqwedqwdqwd
+ip route 10.88.156.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.156.64 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.156.192 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.157.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.157.64 255.255.255.192 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.157.128 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.157.192 255.255.255.192 172.20.1.76
+ip route 10.88.158.0 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.158.64 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.158.128 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.158.192 255.255.255.192 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.162.128 255.255.255.128 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.163.0 255.255.255.128 172.20.1.20 name Route_To_FGA_Hami(10.88.163.0/25)
+ip route 10.88.164.0 255.255.255.128 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.164.128 255.255.255.128 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.174.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.194.0 255.255.254.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 10.88.196.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.197.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.198.0 255.255.255.0 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.88.222.0 255.255.255.128 172.20.1.12 name ROUTE_TO_FW-ODC-SPECIAL
+ip route 10.89.241.0 255.255.255.0 172.20.1.156 name Route_To_DR-Site
+ip route 10.89.242.0 255.255.254.0 172.20.1.156 name Route_To_DR-Site
+ip route 10.89.252.0 255.255.252.0 10.88.0.1
+ip route 10.132.52.0 255.255.254.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.54.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.55.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.64.0 255.255.192.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.128.0 255.255.192.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.206.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.207.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.132.208.0 255.255.248.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.133.0.0 255.255.0.0 10.88.0.1
+ip route 10.176.110.128 255.255.255.128 10.88.0.1
+ip route 10.192.16.0 255.255.240.0 10.88.0.1
+ip route 10.192.36.0 255.255.252.0 10.88.0.1
+ip route 10.192.48.0 255.255.252.0 10.88.0.1
+ip route 10.192.80.0 255.255.240.0 10.88.0.1 name "Routing for FPT Indonesia"
+ip route 10.192.124.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.192.128.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.192.132.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.192.133.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.192.134.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.198.0.0 255.255.0.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.198.78.0 255.255.255.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 10.200.184.0 255.255.255.224 10.88.0.1 name Route_To_TIS-SaleForce-Firewall
+ip route 10.207.213.0 255.255.255.0 10.88.0.1
+ip route 10.207.215.0 255.255.255.0 10.88.0.1
+ip route 10.243.17.9 255.255.255.255 10.88.0.1
+ip route 34.2.0.0 255.255.0.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 34.34.0.0 255.255.0.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 34.36.0.0 255.255.0.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 34.254.0.0 255.255.0.0 10.88.0.1 name Route_To_HAL-VPN
+ip route 46.34.80.201 255.255.255.255 10.88.0.1
+ip route 54.165.124.244 255.255.255.255 10.88.0.1
+ip route 54.183.5.29 255.255.255.255 10.88.0.1
+ip route 54.194.82.46 255.255.255.255 10.88.0.1
+ip route 54.229.0.221 255.255.255.255 10.88.0.1
+ip route 54.248.105.7 255.255.255.255 10.88.0.1
+ip route 58.87.57.100 255.255.255.255 10.88.0.1 name vpn.hyundai.com
+ip route 92.120.89.0 255.255.255.0 10.88.0.1
+ip route 106.120.121.180 255.255.255.255 10.88.0.1
+ip route 106.186.99.44 255.255.255.255 10.88.0.1
+ip route 111.87.30.33 255.255.255.255 10.88.0.1
+ip route 128.224.251.37 255.255.255.255 10.88.0.1
+ip route 128.224.252.37 255.255.255.255 10.88.0.1
+ip route 133.242.6.167 255.255.255.255 10.88.0.1
+ip route 134.27.96.0 255.255.255.0 10.88.0.1
+ip route 153.100.6.162 255.255.255.255 10.88.0.1
+ip route 172.16.20.0 255.255.255.0 10.88.0.1 name Route_to_EKB-Chuden-VPN
+ip route 172.21.0.0 255.255.0.0 10.88.0.1
+ip route 172.21.2.0 255.255.254.0 10.88.0.1
+ip route 172.27.29.0 255.255.255.0 10.88.0.1
+ip route 172.28.0.0 255.255.0.0 10.88.0.1
+ip route 172.28.0.13 255.255.255.255 10.88.0.1
+ip route 172.29.0.0 255.255.0.0 10.88.0.1
+ip route 172.30.0.0 255.255.0.0 10.88.0.1
+ip route 173.16.1.0 255.255.255.0 10.88.0.1
+ip route 176.34.142.199 255.255.255.255 10.88.0.1
+ip route 192.103.52.37 255.255.255.255 10.88.0.1
+ip route 192.168.3.0 255.255.255.0 172.20.1.20 name ROUTE_TO_FW-ODC-HIGH_PRIORITY
+ip route 192.168.5.0 255.255.255.0 10.88.0.1
+ip route 192.168.10.0 255.255.255.0 10.88.11.1
+ip route 192.168.100.0 255.255.255.0 172.20.1.148
+ip route 203.162.139.173 255.255.255.255 10.88.0.1
+ip route 203.162.143.90 255.255.255.255 10.88.0.1
+ip route 203.163.97.41 255.255.255.255 10.88.0.1
+ip route 207.235.112.136 255.255.255.255 10.88.0.11
+ip route 210.141.158.198 255.255.255.255 10.88.0.1
+ip route 210.141.158.200 255.255.255.255 10.88.0.1 name "Route To kssdev.remote.kanden.ne.jp"
+ip route 210.245.2.0 255.255.255.0 10.88.0.1
+!
+ip access-list standard ITHCM
+ permit 10.88.20.70
+ permit 10.88.20.17
+ permit 10.88.20.29
+ permit 10.88.20.32
+ permit 10.88.20.202
+ permit 10.88.20.201
+ permit 10.88.20.177
+ permit 10.88.100.0 0.0.0.255
+ip access-list standard SNMP
+ deny   any
+!
+ip access-list extended ETCC
+ permit ip host 10.89.102.52 host 207.235.112.136
+ip access-list extended acl-copp-match-igmp
+ permit igmp any any
+ip access-list extended acl-copp-match-pim-data
+ deny   pim any host 224.0.0.13
+ permit pim any any
+!
+kron occurrence Backup at 12:00 recurring
+ policy-list HCM
+!
+kron policy-list HCM
+ cli write memory
+!
+logging host 10.88.1.65
+logging host 10.88.1.254
+logging host 10.88.1.35
+logging host 10.88.20.177
+logging host 10.88.1.173
+logging host 10.88.251.198
+access-list 10 permit 10.88.1.79
+!
+route-map F1_Slovakia permit 10
+ set ip next-hop 10.88.111.3
+!
+route-map ETCC permit 10
+ match ip address ETCC
+ set ip next-hop 10.88.0.122
+!
+snmp-server community SNMP-fsofthcm RO 10
+tacacs-server host 10.88.1.237
+tacacs-server key 7 141611180A17252D30203038
+!
+radius-server host 10.88.1.88
+radius-server key 7 09655A291F1647141F
+!
+!
+!
+ipv6 access-list acl-copp-match-mld
+ permit icmp any any mld-report
+ permit icmp any any mld-query
+ permit icmp any any mld-reduction
+ permit icmp any any 143
+!
+ipv6 access-list acl-copp-match-ndv6
+ permit icmp any any nd-na
+ permit icmp any any nd-ns
+ permit icmp any any router-advertisement
+ permit icmp any any router-solicitation
+ permit icmp any any redirect
+!
+ipv6 access-list acl-copp-match-pimv6-data
+ deny 103 any host FF02::D
+ permit 103 any any
+!
+control-plane
+ service-policy input policy-default-autocopp
+!
+!
+privilege interface level 15 shutdown
+privilege interface level 5 switchport
+privilege interface level 15 no shutdown
+privilege interface level 5 no switchport
+privilege interface level 0 no
+privilege configure level 5 ip route
+privilege configure level 5 interface
+privilege configure level 5 ip
+privilege exec level 5 copy running-config startup-config
+privilege exec level 5 copy running-config
+privilege exec level 5 copy
+privilege exec level 5 write
+privilege exec level 5 configure terminal
+privilege exec level 5 configure
+privilege exec level 5 show etherchannel summary
+privilege exec level 5 show etherchannel
+privilege exec level 5 show mac address-table address
+privilege exec level 5 show mac address-table
+privilege exec level 5 show mac
+privilege exec level 5 show vlan
+privilege exec level 5 show ip interface brief
+privilege exec level 5 show ip interface
+privilege exec level 5 show ip
+privilege exec level 5 show cdp neighbors detail
+privilege exec level 5 show cdp neighbors
+privilege exec level 5 show cdp
+privilege exec level 5 show running-config
+privilege exec level 5 show logging
+privilege exec level 5 show interfaces
+privilege exec level 5 show
+banner motd ^C
+
+           *****************************WARNING!!!**************************
+
+                                 FPT SOFTWARE HO CHI MINH CORP.
+          Block T2, D1 Street, Saigon Hi-Tech Park, District 9, Ho Chi Minh City, Viet Nam
+
+           *****************************WARNING!!!**************************
+
+                 THIS IS A PRIVATE PROPERTY OF FPT SOFTWARE VIET NAM.
+        IF YOU HAVE ACCESSED THIS FACILITY BY MISTAKE, DISCONNECT IMMEDIATELY.
+        UNAUTHORIZED ACCESS TO THIS SYSTEM MAY SUBJECT YOU TO DISCIPLINARY ACTION
+        AND CRIMINAL PROSECUTION.
+
+           *****************************WARNING!!!**************************
+^C
+!
+line con 0
+ password 7 0808586E0F0A551106
+ logging synchronous
+ login authentication console
+line aux 0
+line vty 0 4
+ access-class ITHCM in
+ length 0
+ transport input ssh
+!
+!
+monitor session 1 source vlan 1 - 4094
+ntp server 174.16.1.1
+ntp server 10.88.1.6
+ntp server 10.88.1.7
+diagnostic bootup level minimal
+!
+!
+module provision switch 1
+ slot 1 slot-type 333 port-type 113 number 4 port-type 60 number 16  virtual-slot 17
+ slot 2 slot-type 156 port-type 31 number 24  virtual-slot 18
+ slot 3 slot-type 318 port-type 31 number 3 port-type 60 number 2  virtual-slot 19
+ slot 4 slot-type 372 port-type 60 number 16 port-type 113 number 4  virtual-slot 20
+ slot 5 slot-type 372 port-type 60 number 16 port-type 113 number 4  virtual-slot 21
+ !
+module provision switch 2
+ slot 1 slot-type 333 port-type 113 number 4 port-type 60 number 16  virtual-slot 33
+ slot 2 slot-type 156 port-type 31 number 24  virtual-slot 34
+ slot 3 slot-type 318 port-type 31 number 3 port-type 60 number 2  virtual-slot 35
+ slot 5 slot-type 372 port-type 60 number 16 port-type 113 number 4  virtual-slot 37
+ 
+!
+
+end
